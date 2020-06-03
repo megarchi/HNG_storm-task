@@ -130,87 +130,151 @@ foreach ($htmlOutput as $test) {
 
 //    echo $testFailed.''.$testPassed;
 
-   if(isset($json_request) && $json_request == 'json'){
-        echo json_encode($content);
-   }else {
+?>
+<?php  if(isset($json_request) && $json_request == 'json'){ 
+    //return the json response 
+        header('Content-Type: application/json'); 
+        echo json_encode($content, true);
 
+        ob_flush();
+	    flush();
+         }else {
     ?>
 
 <!-- FRONTEND CODE HERE -->
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> HNGi7 task 1| Team storm</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team storm</title>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet" />
+    <style>
+    table,
+    .container {
+        margin: 20px auto;
+        max-width: 1000px;
+    }
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    .stat {
+        color: white;
+    }
+
+    .team-name {
+        font-size: 1.6rem;
+        margin-bottom: 10px;
+    }
+
+    .leaders {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .leaders li a {
+        text-decoration: underline;
+    }
+
+    body {
+        font-weight: bold;
+        padding: 1em;
+    }
+
+    .stat {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    thead {
+        color: #fff;
+    }
+
+    tbody {
+        text-align: center;
+        color: #fff;
+    }
+
+    table {
+        margin-top: 100px;
+    }
+    </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-        <a class="navbar-brand text-light" href="#">HNGi7 Team Storm</a>
-        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
-            aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation"></button>
-        <div class="collapse navbar-collapse" id="collapsibleNavId">
-            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                <!-- links here -->
-                <!-- <li class="nav-item active">
-                    <a class="nav-link" href="#">Home</a>
-                </li> -->
+    <header>
+        <div class="container">
+            <div class="team-name">TEAM STORM</div>
+            <ul class="leaders">
+                <li>Leads:</li>
+                <li>
+                    <a href="https://www.github.com/Seymaster">ESI - Backend</a>
+                </li>
+                <li>
+                    <a href="https://www.github.com/joshuafolorunsho">__Josh__ - Frontend</a>
+                </li>
+                <li>
+                    <a href="https://www.github.com/">Aj - devOps</a>
+                </li>
             </ul>
         </div>
-    </nav>
+    </header>
 
-    <div class="container">
-        <table class="table table-striped">
-            <thead class="thead-inverse">
-                <tr>
-                    <th>#</th>
-                    <th>Full Name</th>
-                    <th>Output</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-
-
-                <!-- // number of rows for loop counting
-                // $rows = 0;
-
-                // foreach($htmlOutput as $test=>$index){
-                // echo <<<EOD // <tr>
-                    // <td scope="row">$rows</td>
-                    // <td></td>
-                    // <td></td>
-                    // <td></td>
-                    // </tr>
-                    // EOD;
-                    // } -->
-
-
-
-                <!-- // <tr>
-                    // <td scope="row"></td>
-                    // <td></td>
-                    // <td></td>
-                    // <td></td>
-                    // </tr> -->
-            </tbody>
-            <thead class="thead-inverse">
-                <tr>
-                    <th>#</th>
-                    <th>Full Name</th>
-                    <th>Output</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-        </table>
+    <div>
+        <div class="container">
+            <div class="stat">
+                <p class="bg-green-500 px-2 py-3">Total Submission: <?php echo ($testFailed + $testPassed); ?></p>
+                <p class="bg-green-500 px-2 py-3">Passed: <?php echo $testPassed ?></p>
+                <p class="bg-red-500 px-2 py-3">Failed: <?php echo $testFailed ?></p>
+            </div>
+        </div>
     </div>
+
+    <table>
+        <thead class="bg-blue-700">
+            <tr>
+                <th class="w-1/6 px-4 py-2">ID</th>
+                <th class="w-1/6 px-4 py-2">Author</th>
+                <th class="w-1/2 px-4 py-2">Message</th>
+                <th class="w-1/6 px-4 py-2">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+
+                // counting rows
+                $rows = 0;
+                foreach($htmlOutput as $test){
+                    $status =true;
+                    if($status){
+                        echo <<<EOL
+                        <tr class="bg-green-500">
+                            <td class="border px-4 py-2">$rows</td>
+                            <td class="border px-4 py-2">$test[2]</td>
+                            <td class="border px-4 py-2">$test[0]</td>
+                            <td class="border px-4 py-2">Passed</td>
+                        </tr>
+                        EOL;   
+                    }else {
+                       echo  <<<EOL 
+                       <tr class="bg-red-500">
+                            <td class="border px-4 py-2">$rows</td>
+                            <td class="border px-4 py-2">$test[2]</td>
+                            <td class="border px-4 py-2">$test[0]</td>
+                            <td class="border px-4 py-2">Failed</td>
+                        </tr>
+                        EOL;
+                    }
+
+                    $rows++
+                        
+                }
+            ?>
+
+
+        </tbody>
+    </table>
 </body>
 
 </html>
+
 <?php } ?>
